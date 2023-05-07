@@ -8,7 +8,7 @@ const brand_controller = require("../controllers/brand_controller");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "Homepage" });
+  res.render("index", { title: "Drinks Inventory Application" });
 });
 
 //=============== DRINKS =========================
