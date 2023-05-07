@@ -6,7 +6,7 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
 //display summary
-exports.all_drinks = asyncHandler(async (req, res, next) => {
+exports.summary = asyncHandler(async (req, res, next) => {
   //get details of counts of drinks and brands
   const [drinkCount, brandCount, drinksAvailableCount] = await Promise.all([
     Drink.countDocuments({}).exec(),
