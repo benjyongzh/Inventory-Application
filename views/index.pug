@@ -1,5 +1,20 @@
 extends layout
 
-block content
-  h1= title
-  p Welcome to #{title}
+block content 
+  section(class='py-3')
+    h1(class="h1")= title
+    p(class='h5 mb-4') This application serves as an inventory record of items, and is developed as a simple #[strong Express] website developed as a practice project on #[strong The Odin Project]. Below is a summary of the items logged in the #[strong MongoDB] cluster for this project.
+
+    
+    if error
+      p Error getting dynamic content.
+      p !{error} 
+    else
+      p The context of this project is a drinks shop, where the inventory of the shop is recorded here:
+
+      ul(class='list-group list-group-flush')
+        li(class='list-group-item bg-light pl-0') #[strong Types of Drinks:] !{drink_count}
+        li(class='list-group-item bg-light pl-0') #[strong Brands:] !{brand_count}
+        li(class='list-group-item bg-light pl-0') #[strong Total number of drinks recorded:] !{drinks_instance_count}
+        li(class='list-group-item bg-light pl-0') #[strong Drinks available for sale:] !{drinks_available_count}
+        li(class='list-group-item bg-light pl-0') #[strong Drinks sold:] !{drinks_sold_count}
