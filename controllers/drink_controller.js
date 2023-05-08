@@ -21,6 +21,30 @@ exports.all_drinks = asyncHandler(async (req, res, next) => {
   });
 });
 
+//GET specific drink page
+exports.drink_detail = asyncHandler(async (req, res, next) => {
+  //get specific object based on :id
+  const [drink, drinkInstances] = await Promise.all([
+    Drink.findById(req.params.id).populate("brand").exec(),
+    DrinkInstance.find({ drink: req.params.id }),
+  ]);
+
+  if (book === null) {
+    // no such drinks
+    const err = new Error("Drink not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  const config = req.app.get("config");
+
+  res.render("drink_detail", {
+    mainTitle: config.mainTitle,
+    drink: drink,
+    drink_instances: drinkInstances,
+  });
+});
+
 //GET form for creating drinks
 exports.drink_create_get = asyncHandler(async (req, res, next) => {
   //get all brands

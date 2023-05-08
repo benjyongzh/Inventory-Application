@@ -15,7 +15,7 @@ router.get("/", index_controller.summary);
 //GET all drinks
 router.get("/drinks", drink_controller.all_drinks);
 // //GET one drink
-// router.get("/drink/:id", drink_controller.drink_detail);
+router.get("/drink/:id", drink_controller.drink_detail);
 
 //GET create drink form
 router.get("/drink/create", drink_controller.drink_create_get);
