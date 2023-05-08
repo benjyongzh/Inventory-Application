@@ -17,10 +17,10 @@ router.get("/drinks", drink_controller.all_drinks);
 // //GET one drink
 // router.get("/drink/:id", drink_controller.drink_detail);
 
-// //GET create drink form
-// router.get("/drink/create", drink_controller.drink_create_get);
-// //POST create drink form
-// router.post("/drink/create", drink_controller.drink_create_post);
+//GET create drink form
+router.get("/drink/create", drink_controller.drink_create_get);
+//POST create drink form
+router.post("/drink/create", drink_controller.drink_create_post);
 
 // //GET update drink form
 // router.get("/drink/:id/update", drink_controller.drink_update_get);
