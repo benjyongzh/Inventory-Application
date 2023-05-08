@@ -1,0 +1,32 @@
+extends layout
+
+block content 
+  section(class='py-3')
+    h1(class="h1")= title
+
+    form(method="POST" action ="")
+      div.form-group
+        label(for="name") Name: 
+        input#name.form-control(type="text" placeholder="Name of drink" name="name" required='true' value=(undefined===drink ? "" : drink.name))
+      
+      div.form-group
+        label(for="brand") Brand: 
+        select#brand.form-control(type='select', placeholder='Select brand' name='brand' required='true' )
+          - brands.sort(function(a, b) {let textA = a.last_name.toUpperCase(); let textB = b.last_name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+          for brand in brands
+            if book
+                option(value=brand._id selected=(brand._id.toString()===book.brand._id.toString() ? 'selected' : false) ) #{brand.name}
+            else
+                option(value=brand._id) #{brand.name}
+
+      div.form-group
+        label(for='description') Description:
+        textarea#description.form-control(type='textarea', placeholder="description" name='description') #{undefined===drink ? '' : drink.description}
+      
+      button(class="btn btn-primary" type='submit') Submit
+      a(class="btn btn-outline-dark" href="/drinks" role="button") Cancel
+
+      if errors 
+        ul 
+          for error in errors 
+            li != error.msg

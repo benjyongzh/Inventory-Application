@@ -1,0 +1,16 @@
+extends layout
+
+block content 
+  section(class='py-3')
+    h1(class="h1")= title
+
+    a(class="btn btn-primary" href="/drink/create" role="button") Add Drink
+
+    ul(class='list-group list-group-flush')
+      each drink in drinks
+        li(class='list-group-item bg-light pl-0')
+          a(href=drink.url)  #{drink.name}
+          |  (#{drink.brand.name})
+
+      else 
+        li(class='list-group-item bg-light') There are no drinks.
