@@ -4,7 +4,11 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+//routes
 var indexRouter = require("./routes/index");
+
+//globals
+var config = require("./config");
 
 //middleware for production
 const compression = require("compression");
@@ -46,6 +50,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+//global
+app.set("config", config);
+
+//router
 app.use("/", indexRouter);
 
 // catch 404 and forward to error handler
