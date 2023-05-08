@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const DrinkSchema = new Schema({
   name: { type: String, required: true },
   brand: { type: Schema.Types.ObjectId, ref: "Brand", required: true },
-  description: { type: String },
+  description: { type: String, default: "" },
 });
 
 //virtual for URL
