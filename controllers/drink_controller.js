@@ -66,12 +66,18 @@ exports.drink_create_post = [
     .trim()
     .isLength({ min: 1 })
     .withMessage("Drink name must be at least 1 character long")
-    .escape(),
+    .escape()
+    .withMessage("Drink name must be specified.")
+    .isAlphanumeric()
+    .withMessage("Drink name has non-alphanumeric characters."),
   body("brand", "Brand must not be empty")
     .trim()
     .isLength({ min: 1 })
     .withMessage("Brand name must be at least 1 character long")
-    .escape(),
+    .escape()
+    .withMessage("Brand name must be specified.")
+    .isAlphanumeric()
+    .withMessage("Brand name has non-alphanumeric characters."),
   body("description").trim().escape(),
 
   asyncHandler(async (req, res, next) => {
