@@ -35,14 +35,14 @@ router.post("/drink/create", drink_controller.drink_create_post);
 //=============== BRANDS =========================
 
 //GET all brands
-// router.get("/brands", brand_controller.all_brands);
+router.get("/brands", brand_controller.all_brands);
 // //GET one brand
 // router.get("/brand/:id", brand_controller.brand_detail);
 
-// //GET create brand form
-// router.get("/brand/create", brand_controller.brand_create_get);
-// //POST create brand form
-// router.post("/brand/create", brand_controller.brand_create_post);
+//GET create brand form
+router.get("/brand/create", brand_controller.brand_create_get);
+//POST create brand form
+router.post("/brand/create", brand_controller.brand_create_post);
 
 // //GET update brand form
 // router.get("/brand/:id/update", brand_controller.brand_update_get);
@@ -57,23 +57,23 @@ router.post("/drink/create", drink_controller.drink_create_post);
 //=============== DRINK INSTANCES =========================
 
 //GET all drink_instances
-// router.get("/drinkinstances", drink_instance_controller.all_drink_instances);
+router.get("/drinkinstances", drink_instance_controller.all_drink_instances);
 // //GET one drink
 // router.get(
 //   "/drinkinstance/:id",
 //   drink_instance_controller.drink_instance_detail
 // );
 
-// //GET create drink_instance form
-// router.get(
-//   "/drinkinstance/create",
-//   drink_instance_controller.drink_instance_create_get
-// );
-// //POST create drink_instance form
-// router.post(
-//   "/drinkinstance/create",
-//   drink_instance_controller.drink_instance_create_post
-// );
+//GET create drink_instance form
+router.get(
+  "/drinkinstance/create",
+  drink_instance_controller.drink_instance_create_get
+);
+//POST create drink_instance form
+router.post(
+  "/drinkinstance/create",
+  drink_instance_controller.drink_instance_create_post
+);
 
 // //GET update drink_instance form
 // router.get(

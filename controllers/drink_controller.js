@@ -62,8 +62,16 @@ exports.drink_create_get = asyncHandler(async (req, res, next) => {
 //POST form for creating drinks
 exports.drink_create_post = [
   //validation and sanitization of fields
-  body("name", "Title must not be empty").trim().isLength({ min: 1 }).escape(),
-  body("brand", "Brand must not be empty").trim().isLength({ min: 1 }).escape(),
+  body("name", "Title must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Drink name must be at least 1 character long")
+    .escape(),
+  body("brand", "Brand must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Brand name must be at least 1 character long")
+    .escape(),
   body("description").trim().escape(),
 
   asyncHandler(async (req, res, next) => {
