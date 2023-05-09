@@ -36,8 +36,8 @@ router.post("/drink/create", drink_controller.drink_create_post);
 
 //GET all brands
 router.get("/brands", brand_controller.all_brands);
-// //GET one brand
-// router.get("/brand/:id", brand_controller.brand_detail);
+//GET one brand
+router.get("/brand/:id", brand_controller.brand_detail);
 
 //GET create brand form
 router.get("/brand/create", brand_controller.brand_create_get);
