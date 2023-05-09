@@ -12,10 +12,8 @@ exports.all_drinks = asyncHandler(async (req, res, next) => {
     .populate("brand")
     .exec();
 
-  const config = req.app.get("config");
-
   res.render("all_drinks", {
-    mainTitle: config.mainTitle,
+    mainTitle: req.body.mainTitle,
     title: "All Drinks",
     drinks: allDrinks,
   });
@@ -36,10 +34,8 @@ exports.drink_detail = asyncHandler(async (req, res, next) => {
     return next(err);
   }
 
-  const config = req.app.get("config");
-
   res.render("drink_detail", {
-    mainTitle: config.mainTitle,
+    mainTitle: req.body.mainTitle,
     drink: drink,
     drink_instances: drinkInstances,
   });
@@ -50,10 +46,8 @@ exports.drink_create_get = asyncHandler(async (req, res, next) => {
   //get all brands
   const [allBrands] = await Promise.all([Brand.find().exec()]);
 
-  const config = req.app.get("config");
-
   res.render("drink_form", {
-    mainTitle: config.mainTitle,
+    mainTitle: req.body.mainTitle,
     title: "Create a Drink",
     brands: allBrands,
   });
@@ -95,11 +89,9 @@ exports.drink_create_post = [
       //get all brands again
       const [allBrands] = await Promise.all([Brand.find().exec()]);
 
-      const config = req.app.get("config");
-
       //render form again
       res.render("drink_form", {
-        mainTitle: config.mainTitle,
+        mainTitle: req.body.mainTitle,
         title: "Create a Drink",
         brands: allBrands,
         drink: drink,

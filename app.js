@@ -3,12 +3,13 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var appConfig = require("appConfig");
 
 //routes
 var indexRouter = require("./routes/index");
 
 //globals
-var config = require("./config");
+var config = require("./middleware/appConfig");
 
 //middleware for production
 const compression = require("compression");
@@ -50,8 +51,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-//global
-app.set("config", config);
+//global config
+app.use(config.mainTitle());
 
 //router
 app.use("/", indexRouter);

@@ -10,10 +10,8 @@ exports.all_brands = asyncHandler(async (req, res, next) => {
     .sort({ name: 1 })
     .exec();
 
-  const config = req.app.get("config");
-
   res.render("all_brands", {
-    mainTitle: config.mainTitle,
+    mainTitle: req.body.mainTitle,
     title: "All Brands",
     brands: allbrands,
   });
@@ -34,10 +32,8 @@ exports.brand_detail = asyncHandler(async (req, res, next) => {
     return next(err);
   }
 
-  const config = req.app.get("config");
-
   res.render("brand_detail", {
-    mainTitle: config.mainTitle,
+    mainTitle: req.body.mainTitle,
     brand: brand,
     drinks: drinks,
   });
@@ -45,10 +41,8 @@ exports.brand_detail = asyncHandler(async (req, res, next) => {
 
 //GET form for creating brands
 exports.brand_create_get = asyncHandler(async (req, res, next) => {
-  const config = req.app.get("config");
-
   res.render("brand_form", {
-    mainTitle: config.mainTitle,
+    mainTitle: req.body.mainTitle,
     title: "Create a Brand",
   });
 });
@@ -91,11 +85,9 @@ exports.brand_create_post = [
     const result = validationResult(req);
     if (!result.isEmpty()) {
       //there are errors. re-render form with santized data
-      const config = req.app.get("config");
-
       //render form again
       res.render("brand_form", {
-        mainTitle: config.mainTitle,
+        mainTitle: req.body.mainTitle,
         title: "Create a Brand",
         brand: brand,
         errors: errors.array(),
