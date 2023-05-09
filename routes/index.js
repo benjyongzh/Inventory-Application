@@ -58,11 +58,11 @@ router.post("/brand/create", brand_controller.brand_create_post);
 
 //GET all drink_instances
 router.get("/drinkinstances", drink_instance_controller.all_drink_instances);
-// //GET one drink
-// router.get(
-//   "/drinkinstance/:id",
-//   drink_instance_controller.drink_instance_detail
-// );
+//GET one drink
+router.get(
+  "/drinkinstance/:id",
+  drink_instance_controller.drink_instance_detail
+);
 
 //GET create drink_instance form
 router.get(
