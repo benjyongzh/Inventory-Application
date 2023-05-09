@@ -1,0 +1,33 @@
+extends layout
+
+block content 
+  section(class='py-3')
+    h1(class="h1")= title
+
+    form(method="POST" action ="") 
+      div.form-group
+        label(for="drink") Drink: 
+        select#drink.form-control(type='select' placeholder='Select Drink' name='drink' required='true')
+          - drink_list.sort(function(a,b){let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;})
+          for drink in drink_list 
+            option(value=drink._id, selected=(selected_drink==drink._id.toString() ? 'selected' : false)) #{drink.name}
+
+      div.form-group
+        label(for="date_of_manufacture") Date of Manufacture: 
+        input#date_of_manufacture.form-control(type="date" name="date_of_manufacture" required='true' value=(undefined===drinkinstance ? "" : drinkinstance.date_of_manufacture))
+      
+      div.form-group
+        label(for="date_of_expiry") Date of Expiry: 
+        input#date_of_expiry.form-control(type="date" name="date_of_expiry" required='true' value=(undefined===drinkinstance ? "" : drinkinstance.date_of_expiry))
+
+      div.form-group
+        label(for="date_of_sale") Date of Sale (if applicable): 
+        input#date_of_sale.form-control(type="date" name="date_of_sale" value=(undefined===drinkinstance ? "" : drinkinstance.date_of_sale))
+
+      button(class="btn btn-primary" type='submit') Submit
+      a(class="btn btn-outline-dark" href=drinkinstance.drink.url role="button") Cancel
+
+      if errors 
+        ul 
+          for error in errors 
+            li != error.msg

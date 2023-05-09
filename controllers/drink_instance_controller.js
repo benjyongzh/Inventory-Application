@@ -4,6 +4,12 @@ const DrinkInstance = require("../models/drinkinstance");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
+//middleware
+const {
+  validateInstanceDates,
+} = require("../middleware/validateInstanceDates");
+const { setInstanceStatus } = require("../middleware/setInstanceStatus");
+
 //display list of all instances
 exports.all_drink_instances = asyncHandler(async (req, res, next) => {
   const alldrinkinstances = await DrinkInstance.find({}, "drink")
@@ -11,10 +17,8 @@ exports.all_drink_instances = asyncHandler(async (req, res, next) => {
     .populate("drink")
     .exec();
 
-  const config = req.app.get("config");
-
   res.render("all_drink_instances", {
-    mainTitle: config.mainTitle,
+    mainTitle: req.body.mainTitle,
     title: "All Drink Instances",
     instances: alldrinkinstances,
   });
@@ -35,10 +39,8 @@ exports.drink_instance_detail = asyncHandler(async (req, res, next) => {
     return next(err);
   }
 
-  const config = req.app.get("config");
-
   res.render("drink_instance_detail", {
-    mainTitle: config.mainTitle,
+    mainTitle: req.body.mainTitle,
     instance: drinkinstance,
     drink: drink,
   });
@@ -46,11 +48,13 @@ exports.drink_instance_detail = asyncHandler(async (req, res, next) => {
 
 //GET form for creating drink_instances
 exports.drink_instance_create_get = asyncHandler(async (req, res, next) => {
-  const config = req.app.get("config");
+  //get all drinks
+  const all_drinks = await Drink.find().exec();
 
   res.render("drink_instance_form", {
-    mainTitle: config.mainTitle,
+    mainTitle: req.body.mainTitle,
     title: "Create a Drink Instance",
+    drink_list: all_drinks,
   });
 });
 
@@ -62,22 +66,16 @@ exports.drink_instance_create_post = [
     .withMessage("Drink must be specified.")
     .trim()
     .escape(),
-  body("date_of_manufacture")
-    .exists()
-    .withMessage("Manufacture Date must not be empty")
-    .isISO8601()
-    .toDate(),
-  body("date_of_expiry")
-    .exists()
-    .withMessage("Expiry Date must not be empty")
-    .isISO8601()
-    .toDate(),
-  body("date_of_sale").optional({ checkFalsy: true }).isISO8601().toDate(),
+  //validate to check dates if they are ordered correctly.
+  validateInstanceDates,
+  //set status to expired if status==available && date of expiry has passed
+  setInstanceStatus,
 
   asyncHandler(async (req, res, next) => {
     //create Brand object with sanitized data
     const drink_instance = new DrinkInstance({
       drink: req.body.drink,
+      status: req.body.status,
       date_of_manufacture: req.body.date_of_manufacture,
       date_of_expiry: req.body.date_of_expiry,
       date_of_sale: req.body.date_of_sale,
@@ -87,17 +85,21 @@ exports.drink_instance_create_post = [
     const result = validationResult(req);
     if (!result.isEmpty()) {
       //there are errors. re-render form with santized data
-      const config = req.app.get("config");
+      //get all drinks again
+      const all_drinks = await Drink.find().exec();
 
       //render form again
       res.render("drink_instance_form", {
-        mainTitle: config.mainTitle,
+        mainTitle: req.body.mainTitle,
         title: "Create a Drink Instance",
+        drink_list: all_drinks,
+        drinkinstance: drink_instance,
+        errors: errors.array(),
       });
     } else {
       //data in form is valid. save drink object into db
       await drink_instance.save();
-      res.redirect("/drinkinstances");
+      res.redirect(drink_instance.drink.url);
     }
   }),
 ];
