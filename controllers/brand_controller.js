@@ -6,7 +6,7 @@ const { body, validationResult } = require("express-validator");
 
 //display list of all brands
 exports.all_brands = asyncHandler(async (req, res, next) => {
-  const allbrands = await Brand.find({}, "name year_established")
+  const allbrands = await Brand.find({}, "name country year_established")
     .sort({ name: 1 })
     .exec();
 
@@ -43,40 +43,47 @@ exports.brand_detail = asyncHandler(async (req, res, next) => {
   });
 });
 
-//GET form for creating drinks
-exports.drink_create_get = asyncHandler(async (req, res, next) => {
-  //get all brands
-  const [allBrands] = await Promise.all([Brand.find().exec()]);
-
+//GET form for creating brands
+exports.brand_create_get = asyncHandler(async (req, res, next) => {
   const config = req.app.get("config");
 
-  res.render("drink_form", {
+  res.render("brand_form", {
     mainTitle: config.mainTitle,
-    title: "Create a Drink",
-    brands: allBrands,
+    title: "Create a Brand",
   });
 });
 
-//POST form for creating drinks
-exports.drink_create_post = [
+//POST form for creating brands
+exports.brand_create_post = [
   //validation and sanitization of fields
   body("name", "Title must not be empty")
     .trim()
     .isLength({ min: 1 })
-    .withMessage("Drink name must be at least 1 character long")
-    .escape(),
-  body("brand", "Brand must not be empty")
+    .withMessage("Brand name must be at least 1 character long")
+    .escape()
+    .withMessage("Brand name must be specified.")
+    .isAlphanumeric()
+    .withMessage("Brand name has non-alphanumeric characters."),
+  body("country", "Country must not be empty")
     .trim()
     .isLength({ min: 1 })
-    .withMessage("Brand name must be at least 1 character long")
-    .escape(),
+    .withMessage("Country name must be at least 1 character long")
+    .escape()
+    .withMessage("Country must be specified.")
+    .isAlphanumeric()
+    .withMessage("Country name has non-alphanumeric characters."),
+  body("year_established", "Country must not be empty")
+    .optional({ checkFalsy: true })
+    .isISO8601()
+    .toDate(),
   body("description").trim().escape(),
 
   asyncHandler(async (req, res, next) => {
-    //create Drink object with sanitized data
-    const drink = new Drink({
+    //create Brand object with sanitized data
+    const brand = new Brand({
       name: req.body.name,
-      brand: req.body.brand,
+      country: req.body.country,
+      year_established: req.body.year_established,
       description: req.body.description,
     });
 
@@ -84,22 +91,17 @@ exports.drink_create_post = [
     const result = validationResult(req);
     if (!result.isEmpty()) {
       //there are errors. re-render form with santized data
-      //get all brands again
-      const [allBrands] = await Promise.all([Brand.find().exec()]);
-
       const config = req.app.get("config");
 
       //render form again
-      res.render("drink_form", {
+      res.render("brand_form", {
         mainTitle: config.mainTitle,
-        title: "Create a Drink",
-        brands: allBrands,
-        errors: errors.array(),
+        title: "Create a Brand",
       });
     } else {
       //data in form is valid. save drink object into db
-      await drink.save();
-      res.redirect("/drinks");
+      await brand.save();
+      res.redirect("/brands");
     }
   }),
 ];
