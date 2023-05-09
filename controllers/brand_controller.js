@@ -19,27 +19,27 @@ exports.all_brands = asyncHandler(async (req, res, next) => {
   });
 });
 
-//GET specific drink page
-exports.drink_detail = asyncHandler(async (req, res, next) => {
+//GET specific brand page
+exports.brand_detail = asyncHandler(async (req, res, next) => {
   //get specific object based on :id
-  const [drink, drinkInstances] = await Promise.all([
-    Drink.findById(req.params.id).populate("brand").exec(),
-    DrinkInstance.find({ drink: req.params.id }),
+  const [brand, drinks] = await Promise.all([
+    Brand.findById(req.params.id).exec(),
+    Drink.find({ brand: req.params.id }),
   ]);
 
-  if (book === null) {
-    // no such drinks
-    const err = new Error("Drink not found");
+  if (brand === null) {
+    // no such brand
+    const err = new Error("Brand not found");
     err.status = 404;
     return next(err);
   }
 
   const config = req.app.get("config");
 
-  res.render("drink_detail", {
+  res.render("brand_detail", {
     mainTitle: config.mainTitle,
-    drink: drink,
-    drink_instances: drinkInstances,
+    brand: brand,
+    drinks: drinks,
   });
 });
 
