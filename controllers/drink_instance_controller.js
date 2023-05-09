@@ -93,6 +93,7 @@ exports.drink_instance_create_post = [
         mainTitle: req.body.mainTitle,
         title: "Create a Drink Instance",
         drink_list: all_drinks,
+        selected_drink: drink_instance.drink._id,
         drinkinstance: drink_instance,
         errors: errors.array(),
       });
