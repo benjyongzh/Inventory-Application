@@ -8,7 +8,7 @@ const { body, validationResult } = require("express-validator");
 //display list of all drinks
 exports.all_drinks = asyncHandler(async (req, res, next) => {
   const allDrinks = await Drink.find({}, "name brand")
-    .sort({ title: 1 })
+    .sort({ name: 1 })
     .populate("brand")
     .exec();
 
