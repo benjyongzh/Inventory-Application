@@ -12,7 +12,7 @@ block content
       div.form-group
         label(for="brand") Brand: 
         select#brand.form-control(type='select', placeholder='Select brand' name='brand' required='true' )
-          - brands.sort(function(a, b) {let textA = a.last_name.toUpperCase(); let textB = b.last_name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+          - brands.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
           for brand in brands
             if book
                 option(value=brand._id selected=(brand._id.toString()===book.brand._id.toString() ? 'selected' : false) ) #{brand.name}

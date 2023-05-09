@@ -102,6 +102,7 @@ exports.drink_create_post = [
         mainTitle: config.mainTitle,
         title: "Create a Drink",
         brands: allBrands,
+        drink: drink,
         errors: errors.array(),
       });
     } else {

@@ -97,6 +97,8 @@ exports.brand_create_post = [
       res.render("brand_form", {
         mainTitle: config.mainTitle,
         title: "Create a Brand",
+        brand: brand,
+        errors: errors.array(),
       });
     } else {
       //data in form is valid. save drink object into db
