@@ -1,0 +1,22 @@
+extends layout
+
+block content 
+  section(class='py-3')
+    h1(class="h1")= title
+
+    a(class="btn btn-primary" href="/brand/create" role="button") Add a Drink Instance
+
+    ul(class='list-group list-group-flush')
+      each instance in instances
+        li(class='list-group-item bg-light pl-0')
+          a(href=instance.url)  #{instance._id}
+          |  (#{instance.drink})
+        if instance.status=='Available'
+            p(class="text-success") #[strong #{instance.status}]
+        else if instance.status=="Expired"
+            p(class="text-danger") #[strong #{instance.status}]
+        else
+            p(class="text-primary") #[strong #{instance.status}]
+
+      else 
+        li(class='list-group-item bg-light') There are no drink instances registered yet.
