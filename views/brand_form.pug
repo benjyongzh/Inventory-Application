@@ -1,0 +1,30 @@
+extends layout
+
+block content 
+  section(class='py-3')
+    h1(class="h1")= title
+
+    form(method="POST" action ="")
+      div.form-group
+        label(for="name") Name: 
+        input#name.form-control(type="text" placeholder="Brand Name Here" name="name" required='true' value=(undefined===brand ? "" : brand.name))
+      
+      div.form-group
+        label(for="country") Country: 
+        select#country(class="selectpicker countrypicker" data-live-search="true" data-flag="true" data-default="SG" type='select', placeholder='Select country' name='country' required='true' value=(undefined===brand ? "" : brand.country))
+      
+      div.form-group
+        label(for="year_established") Year Established: 
+        input#year_established.form-control(type="date" placeholder="Yeae Established" name="year_established" value=(undefined===brand ? "" : brand.year_established))
+      
+      div.form-group
+        label(for='description') Description:
+        textarea#description.form-control(type='textarea', placeholder="description" name='description') #{undefined===brand ? '' : brand.description}
+      
+      button(class="btn btn-primary" type='submit') Submit
+      a(class="btn btn-outline-dark" href="/brands" role="button") Cancel
+
+      if errors 
+        ul 
+          for error in errors 
+            li != error.msg
