@@ -5,10 +5,8 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
 //middleware
-const {
-  validateInstanceDates,
-} = require("../middleware/validateInstanceDates");
-const { setInstanceStatus } = require("../middleware/setInstanceStatus");
+const { validateAndSanitizeDates } = require("../middleware/instanceDates");
+const { setInstanceStatus } = require("../middleware/instanceStatus");
 
 //display list of all instances
 exports.all_drink_instances = asyncHandler(async (req, res, next) => {
@@ -67,7 +65,7 @@ exports.drink_instance_create_post = [
     .trim()
     .escape(),
   //validate to check dates if they are ordered correctly.
-  validateInstanceDates,
+  validateAndSanitizeDates,
   //set status to expired if status==available && date of expiry has passed
   setInstanceStatus,
 
