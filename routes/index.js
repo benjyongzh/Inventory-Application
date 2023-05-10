@@ -14,8 +14,6 @@ router.get("/", index_controller.summary);
 
 //GET all drinks
 router.get("/drinks", drink_controller.all_drinks);
-// //GET one drink
-router.get("/drink/:id", drink_controller.drink_detail);
 
 //GET create drink form
 router.get("/drink/create", drink_controller.drink_create_get);
@@ -32,12 +30,13 @@ router.post("/drink/create", drink_controller.drink_create_post);
 // //POST delete drink form
 // router.post("/drink/:id/delete", drink_controller.drink_delete_post);
 
+// //GET one drink
+router.get("/drink/:id", drink_controller.drink_detail);
+
 //=============== BRANDS =========================
 
 //GET all brands
 router.get("/brands", brand_controller.all_brands);
-//GET one brand
-router.get("/brand/:id", brand_controller.brand_detail);
 
 //GET create brand form
 router.get("/brand/create", brand_controller.brand_create_get);
@@ -54,15 +53,13 @@ router.post("/brand/create", brand_controller.brand_create_post);
 // //POST delete brand form
 // router.post("/brand/:id/delete", brand_controller.brand_delete_post);
 
+//GET one brand
+router.get("/brand/:id", brand_controller.brand_detail);
+
 //=============== DRINK INSTANCES =========================
 
 //GET all drink_instances
 router.get("/drinkinstances", drink_instance_controller.all_drink_instances);
-//GET one drink
-router.get(
-  "/drinkinstance/:id",
-  drink_instance_controller.drink_instance_detail
-);
 
 //GET create drink_instance form
 router.get(
@@ -96,5 +93,11 @@ router.post(
 //   "/drinkinstance/:id/delete",
 //   drink_instance_controller.drink_instance_delete_post
 // );
+
+//GET one drink
+router.get(
+  "/drinkinstance/:id",
+  drink_instance_controller.drink_instance_detail
+);
 
 module.exports = router;
