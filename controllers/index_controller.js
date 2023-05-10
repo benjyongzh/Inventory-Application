@@ -22,10 +22,8 @@ exports.summary = asyncHandler(async (req, res, next) => {
     DrinkInstance.countDocuments({ status: "Sold" }).exec(),
   ]);
 
-  const config = req.app.get("config");
-
   res.render("index", {
-    mainTitle: config.mainTitle,
+    mainTitle: req.body.mainTitle,
     title: "Inventory Application",
     drink_count: drinkCount,
     brand_count: brandCount,

@@ -1,8 +1,5 @@
-const express = require("express");
-
-function mainTitle(req, res, next) {
+function setMainTitle(req) {
   req.body.mainTitle = "Inventory App";
-  next();
 }
 
-module.exports = { mainTitle };
+module.exports = { setMainTitle };

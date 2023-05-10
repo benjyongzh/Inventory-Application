@@ -44,6 +44,7 @@ async function main() {
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
+// middlware
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -51,7 +52,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 //global config
-app.use(config.mainTitle());
+app.use(function (req, res, next) {
+  config.setMainTitle(req);
+  next();
+});
 
 //router
 app.use("/", indexRouter);
