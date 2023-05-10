@@ -53,6 +53,7 @@ exports.drink_instance_create_get = asyncHandler(async (req, res, next) => {
     mainTitle: req.body.mainTitle,
     title: "Create a Drink Instance",
     drink_list: all_drinks,
+    backURL: req.headers.referer ? req.headers.referer : "/drinkinstances",
   });
 });
 

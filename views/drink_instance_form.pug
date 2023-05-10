@@ -25,7 +25,7 @@ block content
         input#date_of_sale.form-control(type="date" name="date_of_sale" value=(undefined===drinkinstance ? "" : drinkinstance.date_of_sale))
 
       button(class="btn btn-primary" type='submit') Submit
-      a(class="btn btn-outline-dark" href=drinkinstance.drink.url role="button") Cancel
+      a(class="btn btn-outline-dark" href=backURL role="button") Cancel
 
       if errors 
         ul 
