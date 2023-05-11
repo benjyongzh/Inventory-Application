@@ -3,8 +3,8 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-var livereload = require("livereload");
-var connectLiveReload = require("connect-livereload");
+// var livereload = require("livereload");
+// var connectLiveReload = require("connect-livereload");
 
 //routes
 var indexRouter = require("./routes/index");
@@ -28,14 +28,14 @@ var app = express();
 app.use(compression());
 app.use(helmet.crossOriginEmbedderPolicy({ policy: "credentialless" }));
 app.use(limiter);
-const liveReloadServer = livereload.createServer();
-liveReloadServer.watch(publicDirectory);
-liveReloadServer.server.once("connection", () => {
-  setTimeout(() => {
-    liveReloadServer.refresh("/");
-  }, 100);
-});
-app.use(connectLiveReload());
+// const liveReloadServer = livereload.createServer();
+// liveReloadServer.watch(publicDirectory);
+// liveReloadServer.server.once("connection", () => {
+//   setTimeout(() => {
+//     liveReloadServer.refresh("/");
+//   }, 100);
+// });
+// app.use(connectLiveReload());
 
 //setup mongoose
 const mongoose = require("mongoose");
