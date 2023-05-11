@@ -26,7 +26,7 @@ var app = express();
 
 //middleware setup
 app.use(compression());
-app.use(helmet());
+app.use(helmet.crossOriginEmbedderPolicy({ policy: "credentialless" }));
 app.use(limiter);
 const liveReloadServer = livereload.createServer();
 liveReloadServer.watch(publicDirectory);
