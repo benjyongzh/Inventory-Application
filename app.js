@@ -3,12 +3,15 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var livereload = require("livereload");
+var connectLiveReload = require("connect-livereload");
 
 //routes
 var indexRouter = require("./routes/index");
 
 //globals
 var config = require("./middleware/appConfig");
+const publicDirectory = path.join(__dirname, "public");
 
 //middleware for production
 const compression = require("compression");
@@ -25,6 +28,14 @@ var app = express();
 app.use(compression());
 app.use(helmet());
 app.use(limiter);
+const liveReloadServer = livereload.createServer();
+liveReloadServer.watch(publicDirectory);
+liveReloadServer.server.once("connection", () => {
+  setTimeout(() => {
+    liveReloadServer.refresh("/");
+  }, 100);
+});
+app.use(connectLiveReload());
 
 //setup mongoose
 const mongoose = require("mongoose");
@@ -49,7 +60,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(publicDirectory));
 
 //global config
 app.use(function (req, res, next) {
