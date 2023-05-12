@@ -90,7 +90,7 @@ exports.brand_create_post = [
         mainTitle: req.body.mainTitle,
         title: "Create a Brand",
         brand: brand,
-        errors: errors.array(),
+        errors: result.array(),
       });
     } else {
       //data in form is valid. save drink object into db
