@@ -10,7 +10,7 @@ const DrinkSchema = new Schema({
 
 //virtual for URL
 DrinkSchema.virtual("url").get(function () {
-  return "/catalog/drink/${this._id}";
+  return `/drink/${this._id}`;
 });
 
 module.exports = mongoose.model("Drink", DrinkSchema);

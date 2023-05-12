@@ -12,7 +12,7 @@ const BrandSchema = new Schema({
 
 //virtual for URL
 BrandSchema.virtual("url").get(function () {
-  return "/catalog/brand/${this._id}";
+  return `/brand/${this._id}`;
 });
 
 //virtual for formatted dates
