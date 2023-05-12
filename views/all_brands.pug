@@ -6,11 +6,24 @@ block content
 
     a(class="btn btn-primary" href="/brand/create" role="button") Add Brand
 
-    ul(class='list-group list-group-flush')
+    div(class='card-deck')
       each brand in brands
-        li(class='list-group-item bg-light pl-0')
-          a(class="h3" href=brand.url)  #{brand.name}
-          |  (#{brand.year_established})
+        //- li(class='list-group-item bg-light pl-0')
+        //-   a(class="h2" href=brand.url)  #{brand.name}
+        //-   p(class="h6 mt-2") (#{brand.year_established})
+
+        div(class="card col-xs-12 col-md-6 col-lg-4 col-xl-3")
+          div(class="card-body")
+            h5(class="card-title") #{brand.name}
+            h6(class="card-subtitle mb-2 text-muted") #{brand.year_established}
+            p(class="card-text") #{brand.description}
+            div(class="row")
+              div(class="col")
+                a(class="col btn btn-primary" href=brand.url) Details
+              div(class="col")
+                a(class="col btn btn-secondary" href=brand.url) Update
+              div(class="col")
+                a(class="col btn btn-danger" href=brand.url) Delete
 
       else 
         li(class='list-group-item bg-light') There are no brands registered yet.
