@@ -18,16 +18,22 @@ const sanitizeDates = [
 ];
 
 async function checkDateSequences(req, res, next) {
-  if (body.date_of_expiry.getTime() < req.body.date_of_manufacture.getTime()) {
+  if (
+    req.body.date_of_expiry.getTime() < req.body.date_of_manufacture.getTime()
+  ) {
     throw new Error("Date of Manufacture must be before Date of Expiry");
   }
 
-  if (body.date_of_sale.getTime() < req.body.date_of_manufacture.getTime()) {
-    throw new Error("Date of Manufacture must be before Date of Sale");
-  }
+  if (req.body.date_of_sale) {
+    if (
+      req.body.date_of_sale.getTime() < req.body.date_of_manufacture.getTime()
+    ) {
+      throw new Error("Date of Manufacture must be before Date of Sale");
+    }
 
-  if (body.date_of_sale.getTime() > req.body.date_of_expiry.getTime()) {
-    throw new Error("Date of Sale must be before Date of Expiry");
+    if (req.body.date_of_sale.getTime() > req.body.date_of_expiry.getTime()) {
+      throw new Error("Date of Sale must be before Date of Expiry");
+    }
   }
 
   next();

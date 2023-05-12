@@ -3,15 +3,15 @@ const { body } = require("express-validator");
 const { DateTime } = require("luxon");
 
 function setInstanceStatus(req, res, next) {
-  if (Date.now() >= body.date_of_expiry) {
+  if (Date.now() >= req.body.date_of_expiry) {
     //expired
-    body.status = "Expired";
+    req.body.status = "Expired";
   } else if (body.date_of_sale !== "") {
     //sold
-    body.status = "Sold";
+    req.body.status = "Sold";
   } else {
     //not sold
-    body.status = "Available";
+    req.body.status = "Available";
   }
   next();
 }
