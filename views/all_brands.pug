@@ -9,7 +9,7 @@ block content
     ul(class='list-group list-group-flush')
       each brand in brands
         li(class='list-group-item bg-light pl-0')
-          a(href=brand.url)  #{brand.name}
+          a(class="h3" href=brand.url)  #{brand.name}
           |  (#{brand.year_established})
 
       else 

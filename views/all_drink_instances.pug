@@ -21,7 +21,7 @@ block content
               else
                 span(class="text-primary") #[strong #{instance.status}]
           else
-            p(class="text-danger") Error: instance.status is missing
+            p(class="alert alert-danger") Error: instance.status is missing
 
       else 
         li(class='list-group-item bg-light') There are no drink instances registered yet.

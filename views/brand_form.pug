@@ -12,12 +12,11 @@ block content
       
       div.form-group
         label(for="country") Country: 
-        select#country(class="countrypicker form-control " data-live-search="true" data-default="SG" data-flag="true" name='country' required='true' value=(undefined===brand ? "" : brand.country))
-    
+        select#country(class="countrypicker form-control" data-live-search="true" data-default="SG" data-flag="true" name='country' required='true' value=(undefined===brand ? "" : brand.country))
         
       div.form-group
         label(for="year_established") Year Established: 
-        input#year_established.form-control(type="date" placeholder="Year Established" name="year_established" value=(undefined===brand ? "" : brand.year_established))
+        input#year_established.form-control(type="number" min="0001" max="2025" step="1" placeholder="1990" name="year_established" value=(undefined===brand ? "" : brand.year_established))
       
       div.form-group
         label(for='description') Description:
@@ -29,7 +28,7 @@ block content
       if errors 
         ul(class="list-group list-group-flush") 
           for error in errors 
-            li(class='list-group-item bg-light')= error.msg
+            li(class='list-group-item alert alert-danger')= error.msg
 
     script.
       $(".countrypicker").countrypicker();

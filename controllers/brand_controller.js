@@ -68,8 +68,8 @@ exports.brand_create_post = [
     .withMessage("Country name has non-alphanumeric characters."),
   body("year_established", "Country must not be empty")
     .optional({ checkFalsy: true })
-    .isISO8601()
-    .toDate(),
+    .isNumeric()
+    .isLength({ min: 4, max: 4 }),
   body("description").trim().escape(),
 
   asyncHandler(async (req, res, next) => {
