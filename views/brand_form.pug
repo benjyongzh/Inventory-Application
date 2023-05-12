@@ -12,7 +12,7 @@ block content
       
       div.form-group
         label(for="country") Country: 
-        select#country(class="form-control selectpicker countrypicker" data-live-search="true" data-default="SG" data-flag="true" name='country' required='true' value=(undefined===brand ? "" : brand.country))
+        select#country(class="countrypicker form-control " data-live-search="true" data-default="SG" data-flag="true" name='country' required='true' value=(undefined===brand ? "" : brand.country))
     
         
       div.form-group
@@ -27,9 +27,9 @@ block content
       a(class="btn btn-outline-dark" href="/brands" role="button") Cancel
 
       if errors 
-        ul 
+        ul(class="list-group list-group-flush") 
           for error in errors 
-            li != error.msg
+            li(class='list-group-item bg-light')= error.msg
 
     script.
       $(".countrypicker").countrypicker();

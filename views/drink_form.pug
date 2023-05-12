@@ -27,6 +27,6 @@ block content
       a(class="btn btn-outline-dark" href="/drinks" role="button") Cancel
 
       if errors 
-        ul 
+        ul(class="list-group list-group-flush") 
           for error in errors 
-            li != error.msg
+            li(class='list-group-item bg-light text-danger') Error: #{error.msg}
