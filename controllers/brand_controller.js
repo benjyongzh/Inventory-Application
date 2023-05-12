@@ -56,7 +56,7 @@ exports.brand_create_post = [
     .withMessage("Brand name must be at least 1 character long")
     .escape()
     .withMessage("Brand name must be specified.")
-    .isAlphanumeric()
+    .isAlphanumeric("en-US", { ignore: " " })
     .withMessage("Brand name has non-alphanumeric characters."),
   body("country", "Country must not be empty")
     .trim()
@@ -64,7 +64,7 @@ exports.brand_create_post = [
     .withMessage("Country name must be at least 1 character long")
     .escape()
     .withMessage("Country must be specified.")
-    .isAlphanumeric()
+    .isAlphanumeric("en-US", { ignore: " " })
     .withMessage("Country name has non-alphanumeric characters."),
   body("year_established", "Country must not be empty")
     .optional({ checkFalsy: true })

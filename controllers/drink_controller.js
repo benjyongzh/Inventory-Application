@@ -62,7 +62,7 @@ exports.drink_create_post = [
     .withMessage("Drink name must be at least 1 character long")
     .escape()
     .withMessage("Drink name must be specified.")
-    .isAlphanumeric()
+    .isAlphanumeric("en-US", { ignore: " " })
     .withMessage("Drink name has non-alphanumeric characters."),
   body("brand", "Brand must not be empty")
     .trim()
@@ -70,7 +70,7 @@ exports.drink_create_post = [
     .withMessage("Brand name must be at least 1 character long")
     .escape()
     .withMessage("Brand name must be specified.")
-    .isAlphanumeric()
+    .isAlphanumeric("en-US", { ignore: " " })
     .withMessage("Brand name has non-alphanumeric characters."),
   body("description").trim().escape(),
 
@@ -95,7 +95,7 @@ exports.drink_create_post = [
         title: "Create a Drink",
         brands: allBrands,
         drink: drink,
-        errors: errors.array(),
+        errors: result.array(),
       });
     } else {
       //data in form is valid. save drink object into db
