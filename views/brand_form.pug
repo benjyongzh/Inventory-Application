@@ -12,7 +12,7 @@ block content
       
       div.form-group
         label(for="country") Country: 
-        select#country(class="selectpicker countrypicker" data-live-search="true" data-default="SG" data-flag="true" name='country' required='true' value=(undefined===brand ? "" : brand.country))
+        select#country(class="form-control selectpicker countrypicker" data-live-search="true" data-default="SG" data-flag="true" name='country' required='true' value=(undefined===brand ? "" : brand.country))
     
         
       div.form-group
@@ -33,6 +33,7 @@ block content
 
     script.
       $(".countrypicker").countrypicker();
+
 
     style.
       .dropdown-toggle.btn-default {
