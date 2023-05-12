@@ -10,7 +10,7 @@ const { setInstanceStatus } = require("../middleware/instanceStatus");
 
 //display list of all instances
 exports.all_drink_instances = asyncHandler(async (req, res, next) => {
-  const alldrinkinstances = await DrinkInstance.find({}, "drink")
+  const alldrinkinstances = await DrinkInstance.find()
     .sort({ _id: 1 })
     .populate("drink")
     .exec();
@@ -64,6 +64,8 @@ exports.drink_instance_create_post = [
     .exists()
     .withMessage("Drink must be specified.")
     .trim()
+    .isAlphanumeric()
+    .withMessage("Drink name has non-alphanumeric characters.")
     .escape(),
   //validate to check dates if they are ordered correctly.
   validateAndSanitizeDates,

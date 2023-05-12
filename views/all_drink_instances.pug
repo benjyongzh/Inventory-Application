@@ -9,14 +9,19 @@ block content
     ul(class='list-group list-group-flush')
       each instance in instances
         li(class='list-group-item bg-light pl-0')
-          a(href=instance.url)  #{instance._id}
-          |  (#{instance.drink})
-        if instance.status=='Available'
-            p(class="text-success") #[strong #{instance.status}]
-        else if instance.status=="Expired"
-            p(class="text-danger") #[strong #{instance.status}]
-        else
-            p(class="text-primary") #[strong #{instance.status}]
+          p ID: #{instance._id}
+          p Drink: 
+            a(href=instance.drink.url) #{instance.drink.name}
+          if instance.status 
+            p Status: 
+              if instance.status=='Available'
+                span(class="text-success") #[strong #{instance.status}]
+              else if instance.status=="Expired"
+                span(class="text-danger") #[strong #{instance.status}]
+              else
+                span(class="text-primary") #[strong #{instance.status}]
+          else
+            p(class="text-danger") Error: instance.status is missing
 
       else 
         li(class='list-group-item bg-light') There are no drink instances registered yet.

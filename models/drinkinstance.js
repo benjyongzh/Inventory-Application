@@ -9,6 +9,7 @@ const DrinkInstanceSchema = new Schema({
     type: String,
     required: true,
     enum: ["Available", "Expired", "Sold"],
+    default: "Available",
   },
   date_of_manufacture: { type: Date, required: true, default: Date.now },
   date_of_expiry: { type: Date, required: true },
@@ -17,7 +18,7 @@ const DrinkInstanceSchema = new Schema({
 
 //virtual for URL
 DrinkInstanceSchema.virtual("url").get(function () {
-  return "/catalog/drinkinstance/${this._id}";
+  return `/drinkinstance/${this._id}`;
 });
 
 ///virtual for formatted dates
