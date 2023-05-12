@@ -27,7 +27,7 @@ exports.drink_detail = asyncHandler(async (req, res, next) => {
     DrinkInstance.find({ drink: req.params.id }),
   ]);
 
-  if (book === null) {
+  if (drink === null) {
     // no such drinks
     const err = new Error("Drink not found");
     err.status = 404;

@@ -4,14 +4,17 @@ block content
   section(class='py-3')
     .row 
 
-      h1(class="h1 col") #{drink.title}
+      h1(class="h1 col") #{drink.name}
 
       div(class="col ml-auto")
         a(class="col btn btn-primary" href=drink.url+'/update' role="button") Edit
         a(class="col btn btn-danger" href=drink.url+'/delete' role="button") Delete
 
+    h4(class="h4") Brand
+    p #{drink.brand.name}
+
     h4(class="h4") Description
-    p !{drink.description}
+    p #{drink.description}
 
     h4(class="h4") Instances 
 
