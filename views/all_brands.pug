@@ -12,18 +12,18 @@ block content
         //-   a(class="h2" href=brand.url)  #{brand.name}
         //-   p(class="h6 mt-2") (#{brand.year_established})
 
-        div(class="card col-xs-12 col-md-6 col-lg-4 col-xl-3")
+        div(class="card col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2")
           div(class="card-body")
             h5(class="card-title") #{brand.name}
             h6(class="card-subtitle mb-2 text-muted") #{brand.year_established}
             p(class="card-text") #{brand.description}
-            div(class="row")
-              div(class="col")
-                a(class="col btn btn-primary" href=brand.url) Details
-              div(class="col")
-                a(class="col btn btn-secondary" href=brand.url) Update
-              div(class="col")
-                a(class="col btn btn-danger" href=brand.url) Delete
+            div(class="d-flex flex-column align-items-center" style={'gap': '1rem'})
+              div(class="w-100" style={'max-width': '250px'})
+                a(class="w-100 btn btn-primary" href=brand.url) Details
+              div(class="w-100" style={'max-width': '250px'})
+                a(class="w-100 btn btn-secondary" href=brand.url) Update
+              div(class="w-100" style={'max-width': '250px'})
+                a(class="w-100 btn btn-danger" href=brand.url) Delete
 
       else 
         li(class='list-group-item bg-light') There are no brands registered yet.
