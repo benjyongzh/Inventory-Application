@@ -23,9 +23,9 @@ block content
         li(class='list-group-item d-flex justify-content-between')
             div(class="col")
                 p(class="h5 mb-3") #{drink.name }
-                p Available: #{statusCount[drink._id] }
-                p Expired: #{statusCount[drink._id] }
-                p Sold: #{statusCount[drink._id]}
+                p Available: #{statusCount[drink._id].availableCount}
+                p Expired: #{statusCount[drink._id].expiredCount}
+                p Sold: #{statusCount[drink._id].soldCount}
             div(class="col d-flex justify-content-end align-items-center")
                 a(class="btn btn-primary" href=drink.url) Details
           

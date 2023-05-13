@@ -5,6 +5,11 @@ const DrinkInstance = require("../models/drinkinstance");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
+//custom middlware
+const {
+  getDrinksFromBrandId,
+  setInstanceStatusCount,
+} = require("../middleware/brandInstanceCount");
 const { brandFormSanitization } = require("../middleware/brandFormValidation");
 
 //display list of all brands
@@ -21,48 +26,30 @@ exports.all_brands = asyncHandler(async (req, res, next) => {
 });
 
 //GET specific brand page
-exports.brand_detail = asyncHandler(async (req, res, next) => {
-  //get specific object based on :id
-  const [brand, drinks] = await Promise.all([
-    Brand.findById(req.params.id).exec(),
-    Drink.find({ brand: req.params.id }),
-  ]);
+exports.brand_detail = [
+  getDrinksFromBrandId,
+  setInstanceStatusCount,
+  asyncHandler(async (req, res, next) => {
+    //get specific object based on :id
+    const brand = await Brand.findById(req.params.id).exec();
 
-  if (brand === null) {
-    // no such brand
-    const err = new Error("Brand not found");
-    err.status = 404;
-    return next(err);
-  }
+    if (brand === null) {
+      // no such brand
+      const err = new Error("Brand not found");
+      err.status = 404;
+      return next(err);
+    }
 
-  const drink_instances_status_count = {};
-  drinks.forEach(async (drink) => {
-    const [availableCount, expiredCount, soldCount] = await Promise.all([
-      DrinkInstance.countDocuments({
-        drink: drink._id,
-        status: "Available",
-      }).exec(),
-      DrinkInstance.countDocuments({
-        drink: drink._id,
-        status: "Expired",
-      }).exec(),
-      DrinkInstance.countDocuments({ drink: drink._id, status: "Sold" }).exec(),
-    ]);
-    drink_instances_status_count[drink._id] = {
-      availableCount: availableCount,
-      expiredCount: expiredCount,
-      soldCount: soldCount,
-    };
-    console.log(drink_instances_status_count);
-  });
+    console.log(req.body.drink_instances_status_count);
 
-  res.render("brand_detail", {
-    mainTitle: req.body.mainTitle,
-    brand: brand,
-    drinks: drinks,
-    statusCount: drink_instances_status_count,
-  });
-});
+    res.render("brand_detail", {
+      mainTitle: req.body.mainTitle,
+      brand: brand,
+      drinks: req.body.drinks,
+      statusCount: req.body.drink_instances_status_count,
+    });
+  }),
+];
 
 //GET form for creating brands
 exports.brand_create_get = asyncHandler(async (req, res, next) => {
