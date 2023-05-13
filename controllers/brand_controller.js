@@ -92,7 +92,7 @@ exports.brand_create_post = [
   }),
 ];
 
-//GET form for creating brands
+//GET form for updating brands
 exports.brand_update_get = asyncHandler(async (req, res, next) => {
   //get current brand
   const currentBrand = await Brand.findById(req.params.id).exec();
@@ -104,8 +104,58 @@ exports.brand_update_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-//POST form for creating brands
+//POST form for updating brands
 exports.brand_update_post = [
+  //validation and sanitization of fields
+  brandFormSanitization,
+
+  asyncHandler(async (req, res, next) => {
+    //create Brand object with sanitized data
+    const brand = new Brand({
+      name: req.body.name,
+      country: req.body.country,
+      year_established: req.body.year_established,
+      description: req.body.description,
+      _id: req.params.id,
+    });
+
+    //check for errors
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      //there are errors. re-render form with santized data
+      //render form again
+      res.render("brand_form", {
+        mainTitle: req.body.mainTitle,
+        title: "Update a Brand",
+        brand: brand,
+        errors: result.array(),
+      });
+    } else {
+      //data in form is valid. update existing brand object into db
+      await Brand.findByIdAndUpdate(req.params.id, brand, {});
+      res.redirect(brand.url);
+    }
+  }),
+];
+
+//GET form for deleting brands
+exports.brand_delete_get = asyncHandler(async (req, res, next) => {
+  //get current brand
+  const [currentBrand, drinks] = await Promise.all([
+    Brand.findById(req.params.id).exec(),
+    Drink.find({ brand: req.params.id }),
+  ]);
+
+  res.render("brand_delete", {
+    mainTitle: req.body.mainTitle,
+    title: "Delete a Brand",
+    brand: currentBrand,
+    drinks: drinks,
+  });
+});
+
+//POST form for deleting brands
+exports.brand_delete_post = [
   //validation and sanitization of fields
   brandFormSanitization,
 
