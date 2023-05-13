@@ -151,39 +151,32 @@ exports.brand_delete_get = asyncHandler(async (req, res, next) => {
     title: "Delete a Brand",
     brand: currentBrand,
     drinks: drinks,
+    drinksDeleteErrorMsg: false,
+    backURL: req.headers.referer ? req.headers.referer : "/brands",
   });
 });
 
 //POST form for deleting brands
-exports.brand_delete_post = [
-  //validation and sanitization of fields
-  brandFormSanitization,
-
-  asyncHandler(async (req, res, next) => {
-    //create Brand object with sanitized data
-    const brand = new Brand({
-      name: req.body.name,
-      country: req.body.country,
-      year_established: req.body.year_established,
-      description: req.body.description,
-      _id: req.params.id,
+exports.brand_delete_post = asyncHandler(async (req, res, next) => {
+  // check if all drinks have already been deleted
+  const [currentBrand, drinks] = await Promise.all([
+    Brand.findById(req.params.id).exec(),
+    Drink.find({ brand: req.params.id }),
+  ]);
+  if (drinks.length > 0) {
+    //there are still drinks
+    res.render("brand_delete", {
+      mainTitle: req.body.mainTitle,
+      title: "Delete a Brand",
+      brand: currentBrand,
+      drinks: drinks,
+      drinksDeleteErrorMsg: true,
+      backURL: req.headers.referer ? req.headers.referer : "/brands",
     });
-
-    //check for errors
-    const result = validationResult(req);
-    if (!result.isEmpty()) {
-      //there are errors. re-render form with santized data
-      //render form again
-      res.render("brand_form", {
-        mainTitle: req.body.mainTitle,
-        title: "Update a Brand",
-        brand: brand,
-        errors: result.array(),
-      });
-    } else {
-      //data in form is valid. update existing brand object into db
-      await Brand.findByIdAndUpdate(req.params.id, brand, {});
-      res.redirect(brand.url);
-    }
-  }),
-];
+    return;
+  } else {
+    //data in form is valid. update existing brand object into db
+    await Brand.findByIdAndRemove(req.params.id);
+    res.redirect("/brands");
+  }
+});
