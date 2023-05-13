@@ -43,10 +43,10 @@ router.get("/brand/create", brand_controller.brand_create_get);
 //POST create brand form
 router.post("/brand/create", brand_controller.brand_create_post);
 
-// //GET update brand form
-// router.get("/brand/:id/update", brand_controller.brand_update_get);
-// //POST update brand form
-// router.post("/brand/:id/update", brand_controller.brand_update_post);
+//GET update brand form
+router.get("/brand/:id/update", brand_controller.brand_update_get);
+//POST update brand form
+router.post("/brand/:id/update", brand_controller.brand_update_post);
 
 // //GET delete brand form
 // router.get("/brand/:id/delete", brand_controller.brand_delete_get);

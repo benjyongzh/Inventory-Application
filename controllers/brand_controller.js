@@ -4,6 +4,8 @@ const Brand = require("../models/brand");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
+const { brandFormSanitization } = require("../middleware/brandFormValidation");
+
 //display list of all brands
 exports.all_brands = asyncHandler(async (req, res, next) => {
   const allbrands = await Brand.find({}, "name country year_established")
@@ -50,27 +52,7 @@ exports.brand_create_get = asyncHandler(async (req, res, next) => {
 //POST form for creating brands
 exports.brand_create_post = [
   //validation and sanitization of fields
-  body("name", "Title must not be empty")
-    .trim()
-    .isLength({ min: 1 })
-    .withMessage("Brand name must be at least 1 character long")
-    .escape()
-    .withMessage("Brand name must be specified.")
-    .isAlphanumeric("en-US", { ignore: " " })
-    .withMessage("Brand name has non-alphanumeric characters."),
-  body("country", "Country must not be empty")
-    .trim()
-    .isLength({ min: 1 })
-    .withMessage("Country name must be at least 1 character long")
-    .escape()
-    .withMessage("Country must be specified.")
-    .isAlphanumeric("en-US", { ignore: " " })
-    .withMessage("Country name has non-alphanumeric characters."),
-  body("year_established", "Country must not be empty")
-    .optional({ checkFalsy: true })
-    .isNumeric()
-    .isLength({ min: 4, max: 4 }),
-  body("description").trim().escape(),
+  brandFormSanitization,
 
   asyncHandler(async (req, res, next) => {
     //create Brand object with sanitized data
@@ -96,6 +78,52 @@ exports.brand_create_post = [
       //data in form is valid. save drink object into db
       await brand.save();
       res.redirect("/brands");
+    }
+  }),
+];
+
+//GET form for creating brands
+exports.brand_update_get = asyncHandler(async (req, res, next) => {
+  //get current brand
+  const currentBrand = await Brand.findById(req.params.id).exec();
+
+  res.render("brand_form", {
+    mainTitle: req.body.mainTitle,
+    title: "Update a Brand",
+    brand: currentBrand,
+  });
+});
+
+//POST form for creating brands
+exports.brand_update_post = [
+  //validation and sanitization of fields
+  brandFormSanitization,
+
+  asyncHandler(async (req, res, next) => {
+    //create Brand object with sanitized data
+    const brand = new Brand({
+      name: req.body.name,
+      country: req.body.country,
+      year_established: req.body.year_established,
+      description: req.body.description,
+      _id: req.params.id,
+    });
+
+    //check for errors
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      //there are errors. re-render form with santized data
+      //render form again
+      res.render("brand_form", {
+        mainTitle: req.body.mainTitle,
+        title: "Update a Brand",
+        brand: brand,
+        errors: result.array(),
+      });
+    } else {
+      //data in form is valid. update existing brand object into db
+      await Brand.findByIdAndUpdate(req.params.id, brand, {});
+      res.redirect(brand.url);
     }
   }),
 ];
