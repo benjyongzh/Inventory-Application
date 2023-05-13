@@ -20,14 +20,12 @@ block content
 
     ul(class='list-group mt-3')
       each drink in drinks
-        li(class='list-group-item d-flex justify-content-between')
-            div(class="col")
-                p(class="h5 mb-3") #{drink.name }
-                p Available: #{statusCount[drink._id].availableCount}
-                p Expired: #{statusCount[drink._id].expiredCount}
-                p Sold: #{statusCount[drink._id].soldCount}
-            div(class="col d-flex justify-content-end align-items-center")
-                a(class="btn btn-primary" href=drink.url) Details
+        a(href=drink.url class="list-group-item list-group-item-action") 
+            p(class="h5 mb-3") #{drink.name }
+            div(class="row mr-auto" style={'max-width': '550px'})
+                p(class="col") Available: #{statusCount[drink._id].availableCount}
+                p(class="col") Expired: #{statusCount[drink._id].expiredCount}
+                p(class="col") Sold: #{statusCount[drink._id].soldCount}
           
 
       else 
