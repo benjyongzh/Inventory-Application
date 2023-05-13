@@ -1,0 +1,34 @@
+extends layout
+
+block content 
+  section(class='py-3')
+    div(class="row mb-4")
+
+      h1(class="h1 col-sm-12 col-md-6") #{brand.name}
+
+      div(class="col-sm-12 col-md-6 d-flex justify-content-between" style={'max-width': '550px'})
+        div(class="col")
+            a(class="col btn btn-primary" href=brand.url+'/update' role="button") Update
+        div(class="col")
+            a(class="col btn btn-danger" href=brand.url+'/delete' role="button") Delete
+
+    p #{brand.description}
+
+    h4(class="h4") Drinks
+
+    a(class="btn btn-primary" href="/drink/create" role="button") Add Drink
+
+    ul(class='list-group mt-3')
+      each drink in drinks
+        li(class='list-group-item d-flex justify-content-between')
+            div(class="col")
+                p(class="h5 mb-3") #{drink.name }
+                p Available: #{statusCount[drink._id] }
+                p Expired: #{statusCount[drink._id] }
+                p Sold: #{statusCount[drink._id]}
+            div(class="col d-flex justify-content-end align-items-center")
+                a(class="btn btn-primary" href=drink.url) Details
+          
+
+      else 
+        li(class='list-group-item') #{brand.name} has no drinks registered yet.

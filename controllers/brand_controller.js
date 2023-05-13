@@ -1,5 +1,6 @@
 const Drink = require("../models/drink");
 const Brand = require("../models/brand");
+const DrinkInstance = require("../models/drinkinstance");
 
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
@@ -34,10 +35,32 @@ exports.brand_detail = asyncHandler(async (req, res, next) => {
     return next(err);
   }
 
+  const drink_instances_status_count = {};
+  drinks.forEach(async (drink) => {
+    const [availableCount, expiredCount, soldCount] = await Promise.all([
+      DrinkInstance.countDocuments({
+        drink: drink._id,
+        status: "Available",
+      }).exec(),
+      DrinkInstance.countDocuments({
+        drink: drink._id,
+        status: "Expired",
+      }).exec(),
+      DrinkInstance.countDocuments({ drink: drink._id, status: "Sold" }).exec(),
+    ]);
+    drink_instances_status_count[drink._id] = {
+      availableCount: availableCount,
+      expiredCount: expiredCount,
+      soldCount: soldCount,
+    };
+    console.log(drink_instances_status_count);
+  });
+
   res.render("brand_detail", {
     mainTitle: req.body.mainTitle,
     brand: brand,
     drinks: drinks,
+    statusCount: drink_instances_status_count,
   });
 });
 

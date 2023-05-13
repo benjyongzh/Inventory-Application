@@ -2,16 +2,18 @@ extends layout
 
 block content 
   section(class='py-3')
-    .row 
+    div(class="row mb-4")
 
-      h1(class="h1 col") #{drink.name}
+      div(class="h1 col-sm-12 col-md-6 d-flex-column")
+        h1(class="") #{drink.name}
+        p(class="h6") #{drink.brand.name}
 
-      div(class="col ml-auto")
-        a(class="col btn btn-primary" href=drink.url+'/update' role="button") Edit
-        a(class="col btn btn-danger" href=drink.url+'/delete' role="button") Delete
+      div(class="col-sm-12 col-md-6 d-flex justify-content-between" style={'max-width': '550px'})
+        div(class="col")
+            a(class="col btn btn-primary" href=drink.url+'/update' role="button") Update
+        div(class="col")
+            a(class="col btn btn-danger" href=drink.url+'/delete' role="button") Delete
 
-    h4(class="h4") Brand
-    p #{drink.brand.name}
 
     h4(class="h4") Description
     p #{drink.description}
@@ -32,7 +34,7 @@ block content
             else if drink_instance.status=="Expired"
                 span(class="text-danger") #[strong #{drink_instance.status}]
             else
-                span(class="text-primary") #[strong #{drink_instance.status}]
+                span(class="text-primary") #[strong #{drink_instance.status}] 
                 span on #{drink_instance.date_of_sale_formatted }
       else 
         li(class='list-group-item') This drink has no instances registered yet.
