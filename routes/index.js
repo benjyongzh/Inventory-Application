@@ -72,27 +72,27 @@ router.post(
   drink_instance_controller.drink_instance_create_post
 );
 
-// //GET update drink_instance form
-// router.get(
-//   "/drinkinstance/:id/update",
-//   drink_instance_controller.drink_instance_update_get
-// );
-// //POST update drink_instance form
-// router.post(
-//   "/drinkinstance/:id/update",
-//   drink_instance_controller.drink_instance_update_post
-// );
+//GET update drink_instance form
+router.get(
+  "/drinkinstance/:id/update",
+  drink_instance_controller.drink_instance_update_get
+);
+//POST update drink_instance form
+router.post(
+  "/drinkinstance/:id/update",
+  drink_instance_controller.drink_instance_update_post
+);
 
-// //GET delete drink_instance form
-// router.get(
-//   "/drinkinstance/:id/delete",
-//   drink_instance_controller.drink_instance_delete_get
-// );
-// //POST delete drink_instance form
-// router.post(
-//   "/drinkinstance/:id/delete",
-//   drink_instance_controller.drink_instance_delete_post
-// );
+//GET delete drink_instance form
+router.get(
+  "/drinkinstance/:id/delete",
+  drink_instance_controller.drink_instance_delete_get
+);
+//POST delete drink_instance form
+router.post(
+  "/drinkinstance/:id/delete",
+  drink_instance_controller.drink_instance_delete_post
+);
 
 //GET one drink
 router.get(
