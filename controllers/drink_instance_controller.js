@@ -105,3 +105,70 @@ exports.drink_instance_create_post = [
     }
   }),
 ];
+//GET form for updating drink_instances
+exports.drink_instance_update_get = asyncHandler(async (req, res, next) => {
+  //get all drinks and this instance
+  const [currentInstance, all_drinks] = await Promise.all([
+    DrinkInstance.findById(req.params.id),
+    Drink.find().exec(),
+  ]);
+
+  res.render("drink_instance_form", {
+    mainTitle: req.body.mainTitle,
+    title: "Update a Drink Instance",
+    drink_list: all_drinks,
+    drinkinstance: currentInstance,
+    backURL: req.headers.referer ? req.headers.referer : "/drinkinstances",
+  });
+});
+
+//POST form for updating an instance
+exports.drink_instance_update_post = [
+  //validation and sanitization of fields
+  body("drink", "Drink must not be empty")
+    .exists()
+    .withMessage("Drink must be specified.")
+    .trim()
+    .isAlphanumeric()
+    .withMessage("Drink name has non-alphanumeric characters.")
+    .escape(),
+  //validate to check dates if they are ordered correctly.
+  validateAndSanitizeDates,
+  //set status to expired if status==available && date of expiry has passed
+  setInstanceStatus,
+
+  asyncHandler(async (req, res, next) => {
+    //create Brand object with sanitized data
+    const drink_instance = new DrinkInstance({
+      drink: req.body.drink,
+      status: req.body.status,
+      date_of_manufacture: req.body.date_of_manufacture,
+      date_of_expiry: req.body.date_of_expiry,
+      date_of_sale: req.body.date_of_sale,
+      _id: req.params.id,
+    });
+
+    //check for errors
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      //there are errors. re-render form with santized data
+      //get all drinks and this instance again
+      const all_drinks = await Drink.find().exec();
+
+      //render form again
+      res.render("drink_instance_form", {
+        mainTitle: req.body.mainTitle,
+        title: "Update a Drink Instance",
+        drink_list: all_drinks,
+        selected_drink: drink_instance.drink._id,
+        drinkinstance: drink_instance,
+        backURL: req.headers.referer ? req.headers.referer : "/drinkinstances",
+        errors: result.array(),
+      });
+    } else {
+      //data in form is valid. update instance object into DB
+      await DrinkInstance.findByIdAndUpdate(req.params.id, drink_instance, {});
+      res.redirect(drink_instance.drink.url);
+    }
+  }),
+];
