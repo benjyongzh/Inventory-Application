@@ -4,7 +4,9 @@ const DrinkInstance = require("../models/drinkinstance");
 
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
-const drink = require("../models/drink");
+
+//custom middleware
+const { drinkFormSanitization } = require("../middleware/drinkFormValidation");
 
 //display list of all drinks
 exports.all_drinks = asyncHandler(async (req, res, next) => {
@@ -57,23 +59,7 @@ exports.drink_create_get = asyncHandler(async (req, res, next) => {
 //POST form for creating drinks
 exports.drink_create_post = [
   //validation and sanitization of fields
-  body("name", "Title must not be empty")
-    .trim()
-    .isLength({ min: 1 })
-    .withMessage("Drink name must be at least 1 character long")
-    .escape()
-    .withMessage("Drink name must be specified.")
-    .isAlphanumeric("en-US", { ignore: " " })
-    .withMessage("Drink name has non-alphanumeric characters."),
-  body("brand", "Brand must not be empty")
-    .trim()
-    .isLength({ min: 1 })
-    .withMessage("Brand name must be at least 1 character long")
-    .escape()
-    .withMessage("Brand name must be specified.")
-    .isAlphanumeric("en-US", { ignore: " " })
-    .withMessage("Brand name has non-alphanumeric characters."),
-  body("description").trim().escape(),
+  drinkFormSanitization,
 
   asyncHandler(async (req, res, next) => {
     //create Drink object with sanitized data
@@ -106,6 +92,59 @@ exports.drink_create_post = [
   }),
 ];
 
+//GET form for updating drinks
+exports.drink_update_get = asyncHandler(async (req, res, next) => {
+  //get all brands
+  const [currentDrink, allBrands] = await Promise.all([
+    Drink.findById(req.params.id),
+    Brand.find().exec(),
+  ]);
+
+  res.render("drink_form", {
+    mainTitle: req.body.mainTitle,
+    title: "Update a Drink",
+    drink: currentDrink,
+    brands: allBrands,
+  });
+});
+
+//POST form for updating drinks
+exports.drink_update_post = [
+  //validation and sanitization of fields
+  drinkFormSanitization,
+
+  asyncHandler(async (req, res, next) => {
+    //create Drink object with sanitized data
+    const drink = new Drink({
+      name: req.body.name,
+      brand: req.body.brand,
+      description: req.body.description,
+      _id: req.params.id,
+    });
+
+    //check for errors
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      //there are errors. re-render form with santized data
+      //get all brands again
+      const [allBrands] = await Promise.all([Brand.find().exec()]);
+
+      //render form again
+      res.render("drink_form", {
+        mainTitle: req.body.mainTitle,
+        title: "Update a Drink",
+        brands: allBrands,
+        drink: drink,
+        errors: result.array(),
+      });
+    } else {
+      //data in form is valid. save drink object into db
+      await Drink.findByIdAndUpdate(req.params.id, drink, {});
+      res.redirect(drink.url);
+    }
+  }),
+];
+
 //GET form for deleting drinks
 exports.drink_delete_get = asyncHandler(async (req, res, next) => {
   //get all instances
@@ -114,7 +153,7 @@ exports.drink_delete_get = asyncHandler(async (req, res, next) => {
     DrinkInstance.find().exec(),
   ]);
 
-  res.render("drink_form", {
+  res.render("drink_delete", {
     mainTitle: req.body.mainTitle,
     title: `Delete ${currentDrink.name}`,
     drink: currentDrink,
@@ -135,7 +174,7 @@ exports.drink_delete_post = asyncHandler(async (req, res, next) => {
   //check if there are really no more instances left for this drink
   if (allInstances.length > 0) {
     //there are still instances
-    res.render("drink_form", {
+    res.render("drink_delete", {
       mainTitle: req.body.mainTitle,
       title: `Delete ${currentDrink.name}`,
       drink: currentDrink,
@@ -146,7 +185,7 @@ exports.drink_delete_post = asyncHandler(async (req, res, next) => {
     return;
   } else {
     //no instances left. proceed with deletion of this drink
-    await drink.findByIdAndRemove(req.params.id);
+    await Drink.findByIdAndRemove(req.params.id);
     res.redirect("/drinks");
   }
 });
