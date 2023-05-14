@@ -4,6 +4,7 @@ const DrinkInstance = require("../models/drinkinstance");
 
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
+const drink = require("../models/drink");
 
 //display list of all drinks
 exports.all_drinks = asyncHandler(async (req, res, next) => {
@@ -104,3 +105,48 @@ exports.drink_create_post = [
     }
   }),
 ];
+
+//GET form for deleting drinks
+exports.drink_delete_get = asyncHandler(async (req, res, next) => {
+  //get all instances
+  const [currentDrink, allInstances] = await Promise.all([
+    Drink.findById(req.params.id).exec(),
+    DrinkInstance.find().exec(),
+  ]);
+
+  res.render("drink_form", {
+    mainTitle: req.body.mainTitle,
+    title: `Delete ${currentDrink.name}`,
+    drink: currentDrink,
+    instances: allInstances,
+    instanceDeleteErrorMsg: false,
+    backURL: req.header.referer ? req.header.referer : currentDrink.url,
+  });
+});
+
+//POST form for deleting drinks
+exports.drink_delete_post = asyncHandler(async (req, res, next) => {
+  //get all instances
+  const [currentDrink, allInstances] = await Promise.all([
+    Drink.findById(req.params.id).exec(),
+    DrinkInstance.find().exec(),
+  ]);
+
+  //check if there are really no more instances left for this drink
+  if (allInstances.length > 0) {
+    //there are still instances
+    res.render("drink_form", {
+      mainTitle: req.body.mainTitle,
+      title: `Delete ${currentDrink.name}`,
+      drink: currentDrink,
+      instances: allInstances,
+      instanceDeleteErrorMsg: true,
+      backURL: req.header.referer ? req.header.referer : currentDrink.url,
+    });
+    return;
+  } else {
+    //no instances left. proceed with deletion of this drink
+    await drink.findByIdAndRemove(req.params.id);
+    res.redirect("/drinks");
+  }
+});
