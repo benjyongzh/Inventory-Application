@@ -25,10 +25,10 @@ router.post("/drink/create", drink_controller.drink_create_post);
 // //POST update drink form
 // router.post("/drink/:id/update", drink_controller.drink_update_post);
 
-// //GET delete drink form
-// router.get("/drink/:id/delete", drink_controller.drink_delete_get);
-// //POST delete drink form
-// router.post("/drink/:id/delete", drink_controller.drink_delete_post);
+//GET delete drink form
+router.get("/drink/:id/delete", drink_controller.drink_delete_get);
+//POST delete drink form
+router.post("/drink/:id/delete", drink_controller.drink_delete_post);
 
 // //GET one drink
 router.get("/drink/:id", drink_controller.drink_detail);
