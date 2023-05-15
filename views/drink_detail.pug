@@ -24,17 +24,27 @@ block content
 
     ul(class='list-group')
       each drink_instance in drink_instances
-        li(class='list-group-item')
-          a(href=drink_instance.url) #{drink_instance._id }
-          p Date of Manufacture: #{drink_instance.date_of_manufacture_formatted }
-          p Date of Expiry: #{drink_instance.date_of_expiry_formatted }
-          p Status: 
-            if drink_instance.status=='Available'
-                span(class="text-success") #[strong #{drink_instance.status}]
-            else if drink_instance.status=="Expired"
-                span(class="text-danger") #[strong #{drink_instance.status}]
-            else
-                span(class="text-primary") #[strong #{drink_instance.status}] 
-                span on #{drink_instance.date_of_sale_formatted }
+        li(class='list-group-item row')
+          div(class="col-sm-12 col-md-6")
+            p ID: #{drink_instance._id }
+            p Date of Manufacture: #{drink_instance.date_of_manufacture_formatted }
+            p Date of Expiry: #{drink_instance.date_of_expiry_formatted }
+            p Status: 
+              if drink_instance.status=='Available'
+                  span(class="text-success") #[strong #{drink_instance.status}]
+              else if drink_instance.status=="Expired"
+                  span(class="text-danger") #[strong #{drink_instance.status}]
+              else
+                  span(class="text-primary") #[strong #{drink_instance.status}] 
+                  span on #{drink_instance.date_of_sale_formatted }
+          div(class="col-sm-12 col-md-6 d-flex justify-content-between" style={'max-width': '550px'})
+            div(class="col")
+                a(class="col btn btn-primary" href=drink_instance.url+'/update' role="button") Edit
+            div(class="col")
+                a(class="col btn btn-danger" href=drink_instance.url+'/delete' role="button") Delete
+
+
+
+          
       else 
         li(class='list-group-item') This drink has no instances registered yet.
