@@ -1,0 +1,30 @@
+extends layout
+
+block content 
+  section(class='py-3')
+    div(class="mb-4")
+        h1(class="h1 col-sm-12 col-md-6") #{drink.name}
+
+    h4(class="h4") Drink Instances
+    ul(class='list-group mt-3')
+        if instanceDeleteErrorMsg
+            p(class="alert alert-danger") #{drink.name} can only be deleted after its instances listed below have been removed.
+        else 
+            p(class="alert") #{drink.name} can only be deleted after its instances listed below have been removed.
+
+        each instance in instances
+            a(href=instance.url class="list-group-item list-group-item-action") 
+                p(class="h5 mb-3") #{instance._id }
+          
+
+        else 
+            li(class='list-group-item') #{drink.name} has no instances registered.
+
+    p(class="mt-3") Are you sure you want to remove #{drink.name}?
+
+    form(method="POST" action ="")
+        div(class="col-sm-12 col-md-6 d-flex justify-content-between" style={'max-width': '550px'})
+            div(class="col")
+                a(class="col btn btn-outline-primary" href=backURL role="button") Cancel
+            div(class="col")
+                button(class="col btn btn-danger" type='submit') Delete
