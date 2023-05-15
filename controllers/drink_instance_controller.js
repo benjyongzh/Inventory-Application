@@ -89,6 +89,10 @@ exports.drink_instance_create_post = [
       //get all drinks again
       const all_drinks = await Drink.find().exec();
 
+      const backURL = req.headers.referer
+        ? req.headers.referer
+        : "/drinkinstances";
+
       //render form again
       res.render("drink_instance_form", {
         mainTitle: req.body.mainTitle,
@@ -96,12 +100,13 @@ exports.drink_instance_create_post = [
         drink_list: all_drinks,
         selected_drink: drink_instance.drink._id,
         drinkinstance: drink_instance,
+        backURL: backURL,
         errors: result.array(),
       });
     } else {
       //data in form is valid. save drink object into db
       await drink_instance.save();
-      res.redirect(drink_instance.drink.url);
+      res.redirect(backURL);
     }
   }),
 ];
