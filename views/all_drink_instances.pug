@@ -10,18 +10,27 @@ block content
       each instance in instances
         li(class='list-group-item bg-light pl-0')
           p ID: #{instance._id}
-          p Drink: 
-            a(href=instance.drink.url) #{instance.drink.name}
-          if instance.status 
-            p Status: 
-              if instance.status=='Available'
-                span(class="text-success") #[strong #{instance.status}]
-              else if instance.status=="Expired"
-                span(class="text-danger") #[strong #{instance.status}]
+          div(class="row")
+            div(class="col-sm-12 col-md-6")
+              p Drink: 
+                a(href=instance.drink.url) #{instance.drink.name}
+              if instance.status 
+                p Status: 
+                  if instance.status=='Available'
+                    span(class="text-success") #[strong #{instance.status}]
+                  else if instance.status=="Expired"
+                    span(class="text-danger") #[strong #{instance.status}]
+                  else
+                    span(class="text-primary") #[strong #{instance.status}]
               else
-                span(class="text-primary") #[strong #{instance.status}]
-          else
-            p(class="alert alert-danger") Error: instance.status is missing
+                p(class="alert alert-danger") Error: instance.status is missing
+
+            div(class="col-sm-12 col-md-6 d-flex justify-content-between" style={'max-width': '550px'})
+              div(class="col")
+                a(class="col btn btn-primary" href=instance.url+'/update' role="button") Edit
+              div(class="col")
+                a(class="col btn btn-danger" href=instance.url+'/delete' role="button") Delete
+        
 
       else 
         li(class='list-group-item bg-light') There are no drink instances registered yet.
