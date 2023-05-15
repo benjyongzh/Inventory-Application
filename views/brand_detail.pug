@@ -10,7 +10,7 @@ block content
         div(class="col")
             a(class="col btn btn-primary" href=brand.url+'/update' role="button") Update
         div(class="col")
-            a(class="col btn btn-danger" href=brand.url+'/delete' role="button") Delete
+            a(class="col btn btn-outline-danger" href=brand.url+'/delete' role="button") Delete
 
     p #{brand.description}
 
@@ -29,4 +29,4 @@ block content
           
 
       else 
-        li(class='list-group-item') #{brand.name} has no drinks registered yet.
+        p #{brand.name} has no drinks registered yet.

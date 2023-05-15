@@ -24,7 +24,7 @@ block content
         textarea#description.form-control(type='textarea', placeholder="description" name='description') #{undefined===drink ? '' : drink.description}
       
       button(class="btn btn-primary" type='submit') Submit
-      a(class="btn btn-outline-dark" href="/drinks" role="button") Cancel
+      a(class="btn btn-outline-dark" href=backURL role="button") Cancel
 
       if errors 
         ul(class="list-group list-group-flush") 

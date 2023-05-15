@@ -53,6 +53,7 @@ exports.drink_create_get = asyncHandler(async (req, res, next) => {
     mainTitle: req.body.mainTitle,
     title: "Create a Drink",
     brands: allBrands,
+    backURL: req.header.referer || "/drinks",
   });
 });
 
@@ -82,6 +83,7 @@ exports.drink_create_post = [
         title: "Create a Drink",
         brands: allBrands,
         drink: drink,
+        backURL: req.header.referer || "/drinks",
         errors: result.array(),
       });
     } else {

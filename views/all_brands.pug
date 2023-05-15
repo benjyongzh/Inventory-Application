@@ -6,7 +6,7 @@ block content
 
     a(class="btn btn-primary" href="/brand/create" role="button") Add Brand
 
-    div(class='card-deck')
+    div(class='card-deck mt-3')
       each brand in brands
         //- li(class='list-group-item bg-light pl-0')
         //-   a(class="h2" href=brand.url)  #{brand.name}
@@ -26,4 +26,4 @@ block content
                 a(class="w-100 btn btn-danger" href=brand.url+'/delete') Delete
 
       else 
-        li(class='list-group-item bg-light') There are no brands registered yet.
+        p There are no brands registered yet.

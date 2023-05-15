@@ -6,11 +6,11 @@ block content
 
     a(class="btn btn-primary" href="/drink/create" role="button") Add Drink
 
-    ul(class='list-group list-group-flush')
+    ul(class='list-group list-group-flush mt-3')
       each drink in drinks
-        li(class='list-group-item bg-light pl-0')
-          a(href=drink.url)  #{drink.name}
+        a(class='list-group-item list-group-item-action bg-light' href=drink.url)
+          h5 #{drink.name}
           |  (#{drink.brand.name})
 
       else 
-        li(class='list-group-item bg-light') There are no drinks.
+        p There are no drinks.
