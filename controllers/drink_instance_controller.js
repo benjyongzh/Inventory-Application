@@ -105,6 +105,7 @@ exports.drink_instance_create_post = [
     }
   }),
 ];
+
 //GET form for updating drink_instances
 exports.drink_instance_update_get = asyncHandler(async (req, res, next) => {
   //get all drinks and this instance
@@ -172,3 +173,28 @@ exports.drink_instance_update_post = [
     }
   }),
 ];
+//GET form for deleting drink_instances
+exports.drink_instance_delete_get = asyncHandler(async (req, res, next) => {
+  //get this instance
+  const currentInstance = await DrinkInstance.findById(req.params.id)
+    .populate("drink")
+    .exec();
+
+  res.render("drink_instance_delete", {
+    mainTitle: req.body.mainTitle,
+    title: "Delete a Drink Instance",
+    drinkinstance: currentInstance,
+    backURL: req.headers.referer ? req.headers.referer : "/drinkinstances",
+  });
+});
+
+//POST form for deleting an instance
+exports.drink_instance_delete_post = asyncHandler(async (req, res, next) => {
+  //get this instance
+  const currentInstance = await DrinkInstance.findById(req.params.id)
+    .populate("drink")
+    .exec();
+  const backURL = currentInstance.drink.url;
+  await DrinkInstance.findByIdAndRemove(req.params.id);
+  res.redirect(backURL || "/drinkinstances");
+});
