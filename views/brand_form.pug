@@ -22,7 +22,7 @@ block content
         label(for='description') Description:
         textarea#description.form-control(type='textarea', placeholder="description" name='description') #{undefined===brand ? '' : brand.description}
       
-      button(class="btn btn-primary" type='submit') Submit
+      button(class="btn btn-primary mr-3" type='submit') Submit
       a(class="btn btn-outline-dark" href="/brands" role="button") Cancel
 
       if errors 

@@ -24,10 +24,10 @@ block content
         label(for="date_of_sale") Date of Sale (if applicable): 
         input#date_of_sale.form-control(type="date" name="date_of_sale" value=(undefined===drinkinstance ? "" : drinkinstance.date_of_sale))
 
-      button(class="btn btn-primary" type='submit') Submit
+      button(class="btn btn-primary mr-3" type='submit') Submit
       a(class="btn btn-outline-dark" href=backURL role="button") Cancel
 
       if errors 
-        ul(class="list-group list-group-flush") 
+        ul(class="list-group list-group-flush mt-3") 
           for error in errors 
             li(class='list-group-item alert alert-danger') Error: (#{error.path}) #{error.msg}
