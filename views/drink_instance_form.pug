@@ -30,4 +30,4 @@ block content
       if errors 
         ul(class="list-group list-group-flush") 
           for error in errors 
-            li(class='list-group-item alert alert-danger')= error.msg
+            li(class='list-group-item alert alert-danger') Error: (#{error.path}) #{error.msg}

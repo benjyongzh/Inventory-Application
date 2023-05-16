@@ -23,19 +23,15 @@ DrinkInstanceSchema.virtual("url").get(function () {
 
 ///virtual for formatted dates
 DrinkInstanceSchema.virtual("date_of_manufacture_formatted").get(function () {
-  return this.date_of_manufacture
-    ? DateTime.fromJSDate(this.date_of_manufacture).toLocaleString(
-        DateTime.DATE_FULL
-      )
-    : "";
+  return DateTime.fromJSDate(this.date_of_manufacture).toLocaleString(
+    DateTime.DATE_FULL
+  );
 });
 
 DrinkInstanceSchema.virtual("date_of_expiry_formatted").get(function () {
-  return this.date_of_expiry
-    ? DateTime.fromJSDate(this.date_of_expiry).toLocaleString(
-        DateTime.DATE_FULL
-      )
-    : "";
+  return DateTime.fromJSDate(this.date_of_expiry).toLocaleString(
+    DateTime.DATE_FULL
+  );
 });
 
 DrinkInstanceSchema.virtual("date_of_sale_formatted").get(function () {

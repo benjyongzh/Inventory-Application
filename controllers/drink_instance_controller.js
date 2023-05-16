@@ -64,7 +64,7 @@ exports.drink_instance_create_post = [
     .exists()
     .withMessage("Drink must be specified.")
     .trim()
-    .isAlphanumeric()
+    .isAlphanumeric("en-US", { ignore: " " })
     .withMessage("Drink name has non-alphanumeric characters.")
     .escape(),
   //validate to check dates if they are ordered correctly.
@@ -84,14 +84,19 @@ exports.drink_instance_create_post = [
 
     //check for errors
     const result = validationResult(req);
+
+    //get selected drink
+    const selectedDrink = await Drink.findById(drink_instance.drink._id);
+
+    //set backURL
+    const backURL = selectedDrink.url;
+
     if (!result.isEmpty()) {
+      console.log(req.body);
+      console.log(result);
       //there are errors. re-render form with santized data
       //get all drinks again
       const all_drinks = await Drink.find().exec();
-
-      const backURL = req.headers.referer
-        ? req.headers.referer
-        : "/drinkinstances";
 
       //render form again
       res.render("drink_instance_form", {
@@ -154,6 +159,8 @@ exports.drink_instance_update_post = [
       _id: req.params.id,
     });
 
+    const selectedDrink = await Drink.findById(drink_instance.drink._id);
+
     //check for errors
     const result = validationResult(req);
     if (!result.isEmpty()) {
@@ -166,7 +173,7 @@ exports.drink_instance_update_post = [
         mainTitle: req.body.mainTitle,
         title: "Update a Drink Instance",
         drink_list: all_drinks,
-        selected_drink: drink_instance.drink._id,
+        selected_drink: selectedDrink,
         drinkinstance: drink_instance,
         backURL: req.headers.referer ? req.headers.referer : "/drinkinstances",
         errors: result.array(),
@@ -174,7 +181,7 @@ exports.drink_instance_update_post = [
     } else {
       //data in form is valid. update instance object into DB
       await DrinkInstance.findByIdAndUpdate(req.params.id, drink_instance, {});
-      res.redirect(drink_instance.drink.url);
+      res.redirect(selectedDrink.url);
     }
   }),
 ];
