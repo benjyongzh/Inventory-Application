@@ -6,15 +6,28 @@ block content
         h1(class="h1 col-sm-12 col-md-6") #{drink.name}
 
     h4(class="h4") Drink Instances
-    ul(class='list-group mt-3')
+    ul(class='list-group mt-3 container-fluid')
         if instanceDeleteErrorMsg
             p(class="alert alert-danger") #{drink.name} can only be deleted after its instances listed below have been removed.
         else 
             p(class="alert") #{drink.name} can only be deleted after its instances listed below have been removed.
 
         each instance in instances
-            a(href=instance.url class="list-group-item list-group-item-action") 
-                p(class="h5 mb-3") #{instance._id }
+            div(class="list-group-item row") 
+                div.col
+                    p ID: #{instance._id }
+                    p Date of Manufacture: #{instance.date_of_manufacture_formatted }
+                    p Date of Expiry: #{instance.date_of_expiry_formatted }
+                    p Status: 
+                        if instance.status=='Available'
+                            span(class="text-success") #[strong #{instance.status}]
+                        else if instance.status=="Expired"
+                            span(class="text-danger") #[strong #{instance.status}]
+                        else
+                            span(class="text-primary") #[strong #{instance.status}] 
+                            span on #{instance.date_of_sale_formatted }
+                .col 
+                    a(class="btn btn-danger" href=instance.url+"/delete" role="button") Delete
           
 
         else 
