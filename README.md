@@ -6,7 +6,7 @@ This project serves to imitate an inventory application for a drinks stall, with
 
 Learning Points:
 
-- ExpressJS + custom middleware
+- ExpressJS + custom middleware + sanitization and validation
 - MVC architecture
 - MongoDB + Mongoose
 - Railway PaaS Deployment

@@ -92,8 +92,6 @@ exports.drink_instance_create_post = [
     const backURL = selectedDrink.url;
 
     if (!result.isEmpty()) {
-      console.log(req.body);
-      console.log(result);
       //there are errors. re-render form with santized data
       //get all drinks again
       const all_drinks = await Drink.find().exec();

@@ -37,8 +37,6 @@ const checkDateSequences = [
     .custom((manufacture_date, { req }) => {
       //check to make sure sale date is after manufacture date
       const sale_date = req.body.date_of_sale;
-      console.log(sale_date);
-      console.log(sale_date.getTime());
       if (sale_date.getTime() < manufacture_date.getTime()) {
         throw new Error("Date of Manufacture must be before Date of Sale");
       } else return true;
