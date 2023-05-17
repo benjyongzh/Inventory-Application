@@ -104,9 +104,10 @@ exports.drink_update_get = asyncHandler(async (req, res, next) => {
 
   res.render("drink_form", {
     mainTitle: req.body.mainTitle,
-    title: "Update a Drink",
+    title: `Update ${currentDrink.name}`,
     drink: currentDrink,
     brands: allBrands,
+    backURL: req.header.referer ? req.header.referer : "/drinks",
   });
 });
 
@@ -134,10 +135,11 @@ exports.drink_update_post = [
       //render form again
       res.render("drink_form", {
         mainTitle: req.body.mainTitle,
-        title: "Update a Drink",
+        title: `Update ${drink.name}`,
         brands: allBrands,
         drink: drink,
         errors: result.array(),
+        backURL: req.header.referer ? req.header.referer : "/drinks",
       });
     } else {
       //data in form is valid. save drink object into db

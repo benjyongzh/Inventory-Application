@@ -108,7 +108,7 @@ exports.brand_update_get = [
 
     res.render("brand_form", {
       mainTitle: req.body.mainTitle,
-      title: "Update a Brand",
+      title: `Update ${currentBrand.name}`,
       brand: currentBrand,
       countries: req.body.countryList,
     });
@@ -138,7 +138,7 @@ exports.brand_update_post = [
       //render form again
       res.render("brand_form", {
         mainTitle: req.body.mainTitle,
-        title: "Update a Brand",
+        title: `Update ${currentBrand.name}`,
         brand: brand,
         countries: req.body.countryList,
         errors: result.array(),
@@ -161,7 +161,7 @@ exports.brand_delete_get = asyncHandler(async (req, res, next) => {
 
   res.render("brand_delete", {
     mainTitle: req.body.mainTitle,
-    title: "Delete a Brand",
+    title: `Delete ${currentBrand.name}`,
     brand: currentBrand,
     drinks: drinks,
     drinksDeleteErrorMsg: false,
@@ -180,7 +180,7 @@ exports.brand_delete_post = asyncHandler(async (req, res, next) => {
     //there are still drinks
     res.render("brand_delete", {
       mainTitle: req.body.mainTitle,
-      title: "Delete a Brand",
+      title: `Delete ${currentBrand.name}`,
       brand: currentBrand,
       drinks: drinks,
       drinksDeleteErrorMsg: true,
