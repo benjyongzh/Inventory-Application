@@ -8,7 +8,7 @@ const brandFormSanitization = [
     .withMessage("Brand name must be at least 1 character long")
     .escape()
     .withMessage("Brand name must be specified.")
-    .isAlphanumeric("en-US", { ignore: " " })
+    .isAlphanumeric("en-US", { ignore: /\s|\-/g })
     .withMessage("Brand name has non-alphanumeric characters."),
   body("country", "Country must not be empty")
     .trim()
@@ -16,7 +16,7 @@ const brandFormSanitization = [
     .withMessage("Country name must be at least 1 character long")
     .escape()
     .withMessage("Country must be specified.")
-    .isAlphanumeric("en-US", { ignore: " " })
+    .isAlphanumeric("en-US", { ignore: /\s|\-/g })
     .withMessage("Country name has non-alphanumeric characters."),
   body("year_established", "Country must not be empty")
     .optional({ checkFalsy: true })
