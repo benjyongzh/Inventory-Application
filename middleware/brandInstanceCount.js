@@ -36,10 +36,6 @@ async function setInstanceStatusCount(req, res, next) {
   await Promise.all(
     req.body.drinks.map(async (drink) => {
       let statusCount = await getDrinkInstanceCountPerStatus(drink);
-
-      console.log(`bare: ${statusCount}`);
-
-      console.log(`stringify: ${JSON.stringify(statusCount)}`);
       req.body.drink_instances_status_count[drink._id] = statusCount;
     })
   );
