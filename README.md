@@ -4,8 +4,8 @@ Based on a practice project following The Odin Project.
 
 This project serves to imitate an inventory application for a drinks stall, with categories of objects linked to MongoDB, and CRUD operations.
 
-This project has been deployed on Railway, under this URL:
-inventory-application-production-a970.up.railway.app
+This project has been deployed on Railway, [here](inventory-application-production-a970.up.railway.app).
+<br/>
 
 Learning Points:
 
