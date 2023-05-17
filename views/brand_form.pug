@@ -11,8 +11,10 @@ block content
       
       
       div.form-group
-        label(for="country") Country: 
-        select#country(class="countrypicker form-control" data-live-search="true" data-default=(undefined===brand ? "SG" : brand.country) data-flag="true" name='country' required='true')
+        label(for="country") Country of Origin: 
+        select#country(class="form-select form-control" name='country' required='true')
+          for country in countries 
+            option(value=country.code selected=(undefined===brand ? (country.code==="") : brand.country.toString()===country.code.toString())) #{country.name}
         
       div.form-group
         label(for="year_established") Year Established: 
@@ -29,10 +31,6 @@ block content
         ul(class="list-group list-group-flush") 
           for error in errors 
             li(class='list-group-item alert alert-danger')= error.msg
-
-    script.
-      $(".countrypicker").countrypicker();
-
 
     style.
       .dropdown-toggle.btn-default {

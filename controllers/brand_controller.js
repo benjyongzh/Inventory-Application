@@ -6,6 +6,7 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
 //custom middlware
+const { getCountryList } = require("../middleware/countrylist");
 const {
   getDrinksFromBrandId,
   setInstanceStatusCount,
@@ -52,15 +53,20 @@ exports.brand_detail = [
 ];
 
 //GET form for creating brands
-exports.brand_create_get = asyncHandler(async (req, res, next) => {
-  res.render("brand_form", {
-    mainTitle: req.body.mainTitle,
-    title: "Create a Brand",
-  });
-});
+exports.brand_create_get = [
+  getCountryList,
+  asyncHandler(async (req, res, next) => {
+    res.render("brand_form", {
+      mainTitle: req.body.mainTitle,
+      title: "Create a Brand",
+      countries: req.body.countryList,
+    });
+  }),
+];
 
 //POST form for creating brands
 exports.brand_create_post = [
+  getCountryList,
   //validation and sanitization of fields
   brandFormSanitization,
 
@@ -82,6 +88,7 @@ exports.brand_create_post = [
         mainTitle: req.body.mainTitle,
         title: "Create a Brand",
         brand: brand,
+        countries: req.body.countryList,
         errors: result.array(),
       });
     } else {
@@ -93,19 +100,24 @@ exports.brand_create_post = [
 ];
 
 //GET form for updating brands
-exports.brand_update_get = asyncHandler(async (req, res, next) => {
-  //get current brand
-  const currentBrand = await Brand.findById(req.params.id).exec();
+exports.brand_update_get = [
+  getCountryList,
+  asyncHandler(async (req, res, next) => {
+    //get current brand
+    const currentBrand = await Brand.findById(req.params.id).exec();
 
-  res.render("brand_form", {
-    mainTitle: req.body.mainTitle,
-    title: "Update a Brand",
-    brand: currentBrand,
-  });
-});
+    res.render("brand_form", {
+      mainTitle: req.body.mainTitle,
+      title: "Update a Brand",
+      brand: currentBrand,
+      countries: req.body.countryList,
+    });
+  }),
+];
 
 //POST form for updating brands
 exports.brand_update_post = [
+  getCountryList,
   //validation and sanitization of fields
   brandFormSanitization,
 
@@ -128,6 +140,7 @@ exports.brand_update_post = [
         mainTitle: req.body.mainTitle,
         title: "Update a Brand",
         brand: brand,
+        countries: req.body.countryList,
         errors: result.array(),
       });
     } else {
