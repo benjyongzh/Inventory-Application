@@ -28,9 +28,9 @@ block content
       a(class="btn btn-outline-dark" href="/brands" role="button") Cancel
 
       if errors 
-        ul(class="list-group list-group-flush") 
+        ul(class="list-group list-group-flush mt-3") 
           for error in errors 
-            li(class='list-group-item alert alert-danger')= error.msg
+            li(class='list-group-item alert alert-danger') Error: #{error.msg}
 
     style.
       .dropdown-toggle.btn-default {
